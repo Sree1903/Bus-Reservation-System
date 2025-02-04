@@ -1,0 +1,10 @@
+# Ignore IntelliJ IDEA settings
+.idea/
+
+# Ignore output directories
+out/
+
+# Ignore IntelliJ module files
+*.iml
+
+
