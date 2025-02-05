@@ -1,45 +1,34 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BusDemo {
     public static void main(String[] args) {
-
-        ArrayList<Bus> buses = new ArrayList<Bus>();
-        ArrayList<Booking> bookings = new ArrayList<Booking>();
-
-        buses.add(new Bus(1,true,3));
-        buses.add(new Bus(2,false,2));
-        buses.add(new Bus(3,true,4));
-
-        Scanner s = new Scanner(System.in);
-        System.out.print("Enter 1 to continue or 0 to exit:  ");
-        int userInput = s.nextInt();
-        System.out.println();
-        while (userInput == 1)
-        {
-            displayInfo(buses);
+        BusDAO acc = new BusDAO();
+        try{
+            acc.displayInfo();
+            Scanner s = new Scanner(System.in);
+            System.out.print("Enter 1 to continue or 0 to exit:  ");
+            int userInput = s.nextInt();
             System.out.println();
-            Booking booking = new Booking();
-            if(booking.isAvailable(buses,bookings))
+            while (userInput == 1)
             {
-                bookings.add(booking);
-                System.out.println("Successfully booked! Happy Journey!");
+                Booking booking = new Booking();
+                if(booking.isAvailable())
+                {
+                    BookingDAO add = new BookingDAO();
+                    add.addBookings(booking);
+                    System.out.println("Booking confirmed successfully! Wishing you a delightful journey.");
+                }
+                else{
+                    System.out.println("Sorry, the bus is full. Please try another bus or choose a different date.");
+                }
+                System.out.println();
+                System.out.print("Enter 1 to continue or 0 to exit: ");
+                userInput = s.nextInt();
+                System.out.println();
             }
-            else{
-                System.out.println("Sorry, bus is full!, try another bus or try booking on another date.");
-            }
-            System.out.println();
-            System.out.print("Enter 1 to continue or 0 to exit: ");
-            userInput = s.nextInt();
-            System.out.println();
-        }
-    }
-
-    public static void displayInfo(ArrayList<Bus>buses)
-    {
-        for(Bus b : buses)
+        }catch (Exception e)
         {
-            System.out.println("BusNo: " + b.getBusNo() +", " + "Capacity: " + b.getCapacity()+", " +"AC: " + b.isAC() );
+            System.out.println("Our server is down right now. Please try again later.");
         }
     }
 }

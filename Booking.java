@@ -1,6 +1,6 @@
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -40,24 +40,11 @@ public class Booking {
         return date;
     }
 
-    public boolean isAvailable(ArrayList<Bus>buses,ArrayList<Booking>bookings) {
-        int booked = 0;
-        int cap = 0;
-        for(Booking v : bookings)
-        {
-            if(v.getDate().equals(date) && v.getBusNo() == BusNo)
-            {
-                booked++;
-            }
-        }
-        for(Bus c : buses)
-        {
-            if(c.getBusNo() == BusNo)
-            {
-                cap = c.getCapacity();
-                break;
-            }
-        }
+    public boolean isAvailable() throws SQLException {
+        BusDAO busdao = new BusDAO();
+        BookingDAO book = new BookingDAO();
+        int cap = busdao.getCapacity(BusNo);
+        int booked = book.getBookedCount(BusNo,date);
         return booked < cap;
     }
 }
